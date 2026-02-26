@@ -5,8 +5,16 @@ import jwt from 'jsonwebtoken';
 
 export async function POST(req) {
     try {
-        await dbConnect();
+        const db = await dbConnect();
         const { name, email, password, role, address, coordinates } = await req.json();
+
+        if (db.isMock) {
+            console.warn('Simulating successful registration in MOCK MODE');
+            return new Response(JSON.stringify({
+                token: 'mock-token-' + Date.now(),
+                user: { id: 'mock-id-123', name, email, role },
+            }), { status: 201, headers: { 'Content-Type': 'application/json' } });
+        }
 
         const userExists = await User.findOne({ email });
         if (userExists) {

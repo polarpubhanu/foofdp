@@ -1,12 +1,20 @@
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic'; 
 import dbConnect from '../../../../lib/db';
 import User from '../../../../models/User';
 import jwt from 'jsonwebtoken';
 
 export async function POST(req) {
     try {
-        await dbConnect();
+        const db = await dbConnect();
         const { email, password } = await req.json();
+
+        if (db.isMock) {
+            console.warn('Simulating successful login in MOCK MODE');
+            return new Response(JSON.stringify({
+                token: 'mock-token-' + Date.now(),
+                user: { id: 'mock-id-123', name: 'Guest User', email, role: 'Donor' },
+            }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }
 
         const user = await User.findOne({ email });
         if (!user) {

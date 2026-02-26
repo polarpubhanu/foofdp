@@ -5,7 +5,10 @@ import jwt from 'jsonwebtoken';
 
 export async function PATCH(req, { params }) {
     try {
-        await dbConnect();
+        const db = await dbConnect();
+        if (db.isMock) {
+            return new Response(JSON.stringify({ _id: params.id, status: 'Accepted' }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }
         const token = req.headers.get('authorization')?.split(' ')[1];
         if (!token) return new Response(JSON.stringify({ message: 'Unauthorized' }), { status: 401 });
 

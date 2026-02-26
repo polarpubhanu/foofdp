@@ -32,7 +32,7 @@ export default function RegisterPage() {
                 localStorage.setItem('user', JSON.stringify(data.user));
                 window.location.href = '/dashboard';
             } else {
-                setError(data.message || 'Registration failed');
+                setError(data.details ? `${data.message}: ${data.details}` : (data.message || 'Registration failed'));
             }
         } catch (err) {
             setError('An error occurred');

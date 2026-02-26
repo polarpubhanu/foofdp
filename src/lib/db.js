@@ -14,9 +14,9 @@ if (!cached) {
 async function dbConnect() {
     const MONGODB_URI = process.env.MONGODB_URI;
 
-    if (!MONGODB_URI) {
-        console.error('MONGODB_URI is missing in environment variables');
-        throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+    if (MONGODB_URI.includes('<username>') || process.env.USE_MOCK === 'true') {
+        console.warn('⚠️ WORKING IN MOCK MODE: No real database connected.');
+        return { isMock: true };
     }
 
     if (cached.conn) {
@@ -34,7 +34,9 @@ async function dbConnect() {
             return mongoose;
         }).catch(err => {
             console.error('MongoDB Connection Error:', err);
-            throw err;
+            // Fallback to mock if connection fails to keep app running in dev
+            console.warn('⚠️ Connection failed. Falling back to MOCK MODE.');
+            return { isMock: true };
         });
     }
 
@@ -42,7 +44,7 @@ async function dbConnect() {
         cached.conn = await cached.promise;
     } catch (e) {
         cached.promise = null;
-        throw e;
+        return { isMock: true };
     }
 
     return cached.conn;

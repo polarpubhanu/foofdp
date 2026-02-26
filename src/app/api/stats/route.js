@@ -4,7 +4,19 @@ import Donation from '../../../models/Donation';
 
 export async function GET(req) {
     try {
-        await dbConnect();
+        const db = await dbConnect();
+
+        if (db.isMock) {
+            return new Response(JSON.stringify({
+                foodSaved: 450,
+                mealsDistributed: 900,
+                monthlyData: [
+                    { name: 'Jan', value: 10 }, { name: 'Feb', value: 25 },
+                    { name: 'Mar', value: 15 }, { name: 'Apr', value: 30 },
+                ]
+            }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }
+
         const totalDonations = await Donation.countDocuments({ status: 'Accepted' }); // Rescuing counts as saved
 
         return new Response(

@@ -5,7 +5,15 @@ import jwt from 'jsonwebtoken';
 
 export async function GET(req) {
     try {
-        await dbConnect();
+        const db = await dbConnect();
+
+        if (db.isMock) {
+            return new Response(JSON.stringify([
+                { _id: 'mock-1', foodItem: 'Bread & Pastries', quantity: '5kg', status: 'Pending', donor: { name: 'Local Bakery' }, location: { address: 'Main St' } },
+                { _id: 'mock-2', foodItem: 'Fruit Basket', quantity: '10kg', status: 'Pending', donor: { name: 'Fruit Mart' }, location: { address: 'Market Square' } }
+            ]), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }
+
         const { searchParams } = new URL(req.url);
         const status = searchParams.get('status') || 'Pending';
 

@@ -26,7 +26,7 @@ export default function LoginPage() {
                 // Force refresh to update layout state
                 window.location.href = '/dashboard';
             } else {
-                setError(data.message || 'Login failed');
+                setError(data.details ? `${data.message}: ${data.details}` : (data.message || 'Login failed'));
             }
         } catch (err) {
             setError('An error occurred');
