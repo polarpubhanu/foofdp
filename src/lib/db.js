@@ -12,10 +12,10 @@ if (!cached) {
 }
 
 async function dbConnect() {
-    const MONGODB_URI = process.env.MONGODB_URI;
+    const MONGODB_URI = process.env.MONGODB_URI || '';
 
-    if (MONGODB_URI.includes('<username>') || process.env.USE_MOCK === 'true') {
-        console.warn('⚠️ WORKING IN MOCK MODE: No real database connected.');
+    if (!MONGODB_URI || MONGODB_URI.includes('<username>') || process.env.USE_MOCK === 'true') {
+        console.warn('⚠️ WORKING IN MOCK MODE: No real database connected or missing URI.');
         return { isMock: true };
     }
 
