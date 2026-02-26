@@ -24,6 +24,11 @@ export async function POST(req) {
             });
         }
 
+        if (!process.env.JWT_SECRET) {
+            console.error('JWT_SECRET is missing in environment variables');
+            return new Response(JSON.stringify({ message: 'Server configuration error' }), { status: 500 });
+        }
+
         const token = jwt.sign(
             { id: user._id, role: user.role },
             process.env.JWT_SECRET,
@@ -41,8 +46,8 @@ export async function POST(req) {
             }
         );
     } catch (err) {
-        console.error(err);
-        return new Response(JSON.stringify({ message: 'Server error' }), {
+        console.error('Login API Error:', err);
+        return new Response(JSON.stringify({ message: 'Server error', details: err.message }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },
         });

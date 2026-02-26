@@ -3,13 +3,12 @@ import { useState, useEffect } from "react";
 import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
-import { Package, Utensils, truck, Map as MapIcon, CheckCircle2, Clock } from "lucide-react";
+import { Package, Utensils, Truck, Map as MapIcon, CheckCircle2, Clock } from "lucide-react";
 
 export default function DashboardPage() {
     const [stats, setStats] = useState({
         foodSaved: 0,
         mealsDistributed: 0,
-        activeDeliveries: 0,
         monthlyData: []
     });
     const [loading, setLoading] = useState(true);
@@ -33,7 +32,6 @@ export default function DashboardPage() {
     const statCards = [
         { title: 'Total Food Saved', value: `${stats.foodSaved} kg`, icon: <Package className="w-6 h-6" />, color: 'bg-green-100 text-green-700' },
         { title: 'Meals Distributed', value: stats.mealsDistributed, icon: <Utensils className="w-6 h-6" />, color: 'bg-blue-100 text-blue-700' },
-        { title: 'Active Deliveries', value: stats.activeDeliveries, icon: <truck className="w-6 h-6" />, color: 'bg-orange-100 text-orange-700' },
     ];
 
     if (loading) return <div className="animate-pulse flex space-x-4">...Loading Dashboard...</div>;

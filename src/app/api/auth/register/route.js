@@ -25,6 +25,11 @@ export async function POST(req) {
         });
         await user.save();
 
+        if (!process.env.JWT_SECRET) {
+            console.error('JWT_SECRET is missing in environment variables');
+            return new Response(JSON.stringify({ message: 'Server configuration error' }), { status: 500 });
+        }
+
         const token = jwt.sign(
             { id: user._id, role: user.role },
             process.env.JWT_SECRET,
@@ -42,8 +47,17 @@ export async function POST(req) {
             }
         );
     } catch (err) {
-        console.error(err);
-        return new Response(JSON.stringify({ message: 'Server error' }), {
+        console.error('Registration API Error:', err);
+
+        // Handle MongoDB duplicate key error (code 11000)
+        if (err.code === 11000) {
+            return new Response(JSON.stringify({ message: 'User with this email already exists' }), {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
+        return new Response(JSON.stringify({ message: 'Server error', details: err.message }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },
         });

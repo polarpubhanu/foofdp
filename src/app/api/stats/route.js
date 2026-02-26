@@ -5,14 +5,12 @@ import Donation from '../../../models/Donation';
 export async function GET(req) {
     try {
         await dbConnect();
-        const totalDonations = await Donation.countDocuments({ status: 'Delivered' });
-        const activeDeliveries = await Donation.countDocuments({ status: 'Accepted' });
+        const totalDonations = await Donation.countDocuments({ status: 'Accepted' }); // Rescuing counts as saved
 
         return new Response(
             JSON.stringify({
                 foodSaved: totalDonations * 10, // Simulated kg
                 mealsDistributed: totalDonations * 20, // Simulated meals
-                activeDeliveries,
                 monthlyData: [
                     { name: 'Jan', value: 10 },
                     { name: 'Feb', value: 25 },
@@ -23,6 +21,7 @@ export async function GET(req) {
             { status: 200, headers: { 'Content-Type': 'application/json' } }
         );
     } catch (err) {
+        console.error('Stats API Error:', err);
         return new Response(JSON.stringify({ message: 'Server error' }), { status: 500 });
     }
 }

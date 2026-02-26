@@ -84,7 +84,6 @@ export default function RegisterPage() {
                     >
                         <option value="Donor">Food Donor</option>
                         <option value="NGO">NGO / Volunteer</option>
-                        <option value="Recipient">Recipient</option>
                     </select>
                 </div>
                 <div className="md:col-span-2">

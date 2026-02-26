@@ -18,13 +18,7 @@ export default function Sidebar({ role }) {
         { title: 'Impact', path: '/dashboard', icon: <BarChart3 className="w-5 h-5" /> },
     ];
 
-    const recipientLinks = [
-        { title: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
-        { title: 'Request Food', path: '/request', icon: <PlusCircle className="w-5 h-5" /> },
-        { title: 'My Requests', path: '/history', icon: <History className="w-5 h-5" /> },
-    ];
-
-    const links = role === 'Donor' ? donorLinks : role === 'NGO' ? ngoLinks : recipientLinks;
+    const links = role === 'Donor' ? donorLinks : ngoLinks;
 
     return (
         <aside className="fixed left-0 top-16 w-64 h-[calc(100vh-64px)] bg-white border-r border-gray-200 py-6 overflow-y-auto z-40">
@@ -36,8 +30,8 @@ export default function Sidebar({ role }) {
                             key={link.path}
                             href={link.path}
                             className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${isActive
-                                    ? 'bg-green-50 text-green-700 font-semibold border-l-4 border-green-700'
-                                    : 'text-gray-600 hover:bg-gray-50 hover:text-green-600'
+                                ? 'bg-green-50 text-green-700 font-semibold border-l-4 border-green-700'
+                                : 'text-gray-600 hover:bg-gray-50 hover:text-green-600'
                                 }`}
                         >
                             {link.icon}
