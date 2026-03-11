@@ -15,7 +15,7 @@ export default function Sidebar({ role }) {
     const ngoLinks = [
         { title: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
         { title: 'Available Food', path: '/donations', icon: <ShoppingCart className="w-5 h-5" /> },
-        { title: 'Impact', path: '/dashboard', icon: <BarChart3 className="w-5 h-5" /> },
+        { title: 'Impact', path: '/dashboard#impact', icon: <BarChart3 className="w-5 h-5" /> },
     ];
 
     const links = role === 'Donor' ? donorLinks : ngoLinks;

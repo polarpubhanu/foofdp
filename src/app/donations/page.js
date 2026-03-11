@@ -98,7 +98,7 @@ export default function NGOAvailableDonationsPage() {
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Clock size={14} className="text-gray-400" />
-                                        <span><strong>Expiry:</strong> {new Date(donation.expiryDate).toLocaleString()}</span>
+                                        <span><strong>Expiry:</strong> {donation.expiryDate ? new Date(donation.expiryDate).toLocaleString() : 'Not specified'}</span>
                                     </div>
                                     <div className="flex items-center gap-2 border-t border-gray-50 pt-2 mt-2">
                                         <MapPin size={14} className="text-gray-400" />

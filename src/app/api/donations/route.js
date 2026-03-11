@@ -9,8 +9,8 @@ export async function GET(req) {
 
         if (db.isMock) {
             return new Response(JSON.stringify([
-                { _id: 'mock-1', foodItem: 'Bread & Pastries', quantity: '5kg', status: 'Pending', donor: { name: 'Local Bakery' }, location: { address: 'Main St' } },
-                { _id: 'mock-2', foodItem: 'Fruit Basket', quantity: '10kg', status: 'Pending', donor: { name: 'Fruit Mart' }, location: { address: 'Market Square' } }
+                { _id: 'mock-1', foodItem: 'Bread & Pastries', quantity: '5kg', expiryDate: new Date(Date.now() + 86400000).toISOString(), status: 'Pending', donor: { name: 'Local Bakery' }, location: { address: 'Main St' } },
+                { _id: 'mock-2', foodItem: 'Fruit Basket', quantity: '10kg', expiryDate: new Date(Date.now() + 172800000).toISOString(), status: 'Pending', donor: { name: 'Fruit Mart' }, location: { address: 'Market Square' } }
             ]), { status: 200, headers: { 'Content-Type': 'application/json' } });
         }
 
@@ -35,13 +35,18 @@ export async function GET(req) {
 
 export async function POST(req) {
     try {
-        await dbConnect();
+        const db = await dbConnect();
         const token = req.headers.get('authorization')?.split(' ')[1];
         if (!token) return new Response(JSON.stringify({ message: 'Unauthorized' }), { status: 401 });
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         if (decoded.role !== 'Donor') {
             return new Response(JSON.stringify({ message: 'Forbidden' }), { status: 403 });
+        }
+
+        // Mock mode handling
+        if (db.isMock) {
+            return new Response(JSON.stringify({ message: 'Mock mode: Donation simulated successfully' }), { status: 201 });
         }
 
         const { foodItem, quantity, expiryDate, address, coordinates } = await req.json();
