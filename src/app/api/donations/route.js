@@ -9,8 +9,24 @@ export async function GET(req) {
 
         if (db.isMock) {
             return new Response(JSON.stringify([
-                { _id: 'mock-1', foodItem: 'Bread & Pastries', quantity: '5kg', expiryDate: new Date(Date.now() + 86400000).toISOString(), status: 'Pending', donor: { name: 'Local Bakery' }, location: { address: 'Main St' } },
-                { _id: 'mock-2', foodItem: 'Fruit Basket', quantity: '10kg', expiryDate: new Date(Date.now() + 172800000).toISOString(), status: 'Pending', donor: { name: 'Fruit Mart' }, location: { address: 'Market Square' } }
+                {
+                    _id: 'mock-1',
+                    foodItem: 'Bread & Pastries',
+                    quantity: '5kg',
+                    expiryDate: new Date(Date.now() + 86400000).toISOString(),
+                    status: 'Pending',
+                    donor: { name: 'Local Bakery' },
+                    location: { address: 'Delhi Gate, New Delhi', coordinates: { lat: 28.6389, lng: 77.2425 } }
+                },
+                {
+                    _id: 'mock-2',
+                    foodItem: 'Fruit Basket',
+                    quantity: '10kg',
+                    expiryDate: new Date(Date.now() + 172800000).toISOString(),
+                    status: 'Pending',
+                    donor: { name: 'Fruit Mart' },
+                    location: { address: 'Marine Drive, Mumbai', coordinates: { lat: 18.9439, lng: 72.8231 } }
+                }
             ]), { status: 200, headers: { 'Content-Type': 'application/json' } });
         }
 

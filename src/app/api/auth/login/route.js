@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'; 
+export const dynamic = 'force-dynamic';
 import dbConnect from '../../../../lib/db';
 import User from '../../../../models/User';
 import jwt from 'jsonwebtoken';
@@ -6,13 +6,19 @@ import jwt from 'jsonwebtoken';
 export async function POST(req) {
     try {
         const db = await dbConnect();
-        const { email, password } = await req.json();
+        const { email, password, role } = await req.json();
 
         if (db.isMock) {
             console.warn('Simulating successful login in MOCK MODE');
+            const selectedRole = role || 'Donor';
+            const token = jwt.sign(
+                { id: 'mock-id-123', role: selectedRole },
+                process.env.JWT_SECRET || 'mock-secret',
+                { expiresIn: '1d' }
+            );
             return new Response(JSON.stringify({
-                token: 'mock-token-' + Date.now(),
-                user: { id: 'mock-id-123', name: 'Guest User', email, role: 'Donor' },
+                token: token,
+                user: { id: 'mock-id-123', name: 'Guest User', email, role: selectedRole },
             }), { status: 200, headers: { 'Content-Type': 'application/json' } });
         }
 

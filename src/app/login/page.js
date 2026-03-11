@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function LoginPage() {
-    const [formData, setFormData] = useState({ email: '', password: '' });
+    const [formData, setFormData] = useState({ email: '', password: '', role: 'Donor' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const router = useRouter();
@@ -59,6 +59,23 @@ export default function LoginPage() {
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none"
                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     />
+                </div>
+
+                <div className="flex bg-gray-100 p-1 rounded-xl">
+                    <button
+                        type="button"
+                        className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${formData.role === 'Donor' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-500'}`}
+                        onClick={() => setFormData({ ...formData, role: 'Donor' })}
+                    >
+                        Donor
+                    </button>
+                    <button
+                        type="button"
+                        className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${formData.role === 'NGO' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-500'}`}
+                        onClick={() => setFormData({ ...formData, role: 'NGO' })}
+                    >
+                        NGO
+                    </button>
                 </div>
                 <button
                     type="submit"

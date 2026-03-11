@@ -10,9 +10,14 @@ export async function POST(req) {
 
         if (db.isMock) {
             console.warn('Simulating successful registration in MOCK MODE');
+            const token = jwt.sign(
+                { id: 'mock-id-123', name, email, role: role || 'Donor' },
+                process.env.JWT_SECRET || 'mock-secret',
+                { expiresIn: '1d' }
+            );
             return new Response(JSON.stringify({
-                token: 'mock-token-' + Date.now(),
-                user: { id: 'mock-id-123', name, email, role },
+                token: token,
+                user: { id: 'mock-id-123', name, email, role: role || 'Donor' },
             }), { status: 201, headers: { 'Content-Type': 'application/json' } });
         }
 

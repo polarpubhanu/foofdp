@@ -41,7 +41,7 @@ export default function DashboardPage() {
         { title: 'Total Impact', value: `${stats.foodSaved} kg`, icon: <Utensils className="w-6 h-6" />, color: 'bg-blue-100 text-blue-700' },
     ] : [
         { title: 'Rescues Completed', value: `${stats.mealsDistributed / 20}`, icon: <CheckCircle2 className="w-6 h-6" />, color: 'bg-green-100 text-green-700' },
-        { title: 'Meals Distributed', value: stats.mealsDistributed, icon: <Utensils className="w-6 h-6" />, color: 'bg-blue-100 text-blue-700' },
+        { title: 'Meals Distributed', value: `${stats.mealsDistributed} Meals`, icon: <Utensils className="w-6 h-6" />, color: 'bg-blue-100 text-blue-700' },
     ];
 
     if (loading) return <div className="animate-pulse flex items-center justify-center h-64 text-gray-500">Loading Dashboard...</div>;
