@@ -10,7 +10,7 @@ export default function HistoryPage() {
         const fetchHistory = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const res = await fetch('/api/donations?status=Delivered', {
+                const res = await fetch('/api/donations', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const data = await res.json();
@@ -64,8 +64,8 @@ export default function HistoryPage() {
                                         {item.quantity}
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-green-50 text-green-700">
-                                            <CheckCircle2 size={12} /> Delivered
+                                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide ${item.status === 'Delivered' ? 'bg-green-50 text-green-700' : 'bg-orange-50 text-orange-700'}`}>
+                                            {item.status === 'Delivered' ? <CheckCircle2 size={12} /> : <Clock size={12} />} {item.status}
                                         </span>
                                     </td>
                                 </tr>

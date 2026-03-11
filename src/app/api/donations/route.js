@@ -26,6 +26,16 @@ export async function GET(req) {
                     status: 'Pending',
                     donor: { name: 'Fruit Mart' },
                     location: { address: 'Marine Drive, Mumbai', coordinates: { lat: 18.9439, lng: 72.8231 } }
+                },
+                {
+                    _id: 'mock-3',
+                    foodItem: 'Fresh Rice & Curry',
+                    quantity: '20 Meals',
+                    createdAt: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
+                    expiryDate: new Date(Date.now() + 43200000).toISOString(),
+                    status: 'Pending',
+                    donor: { name: 'Guest User' },
+                    location: { address: 'Alliance University, Bangalore', coordinates: { lat: 12.9716, lng: 77.5946 } }
                 }
             ]), { status: 200, headers: { 'Content-Type': 'application/json' } });
         }
