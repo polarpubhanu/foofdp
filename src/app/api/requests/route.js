@@ -28,7 +28,7 @@ export async function POST(req) {
         const token = req.headers.get('authorization')?.split(' ')[1];
         if (!token) return new Response(JSON.stringify({ message: 'Unauthorized' }), { status: 401 });
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'mock-secret');
 
         // Mock mode handling
         if (db.isMock) {

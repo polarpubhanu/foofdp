@@ -12,7 +12,7 @@ export async function PATCH(req, { params }) {
         const token = req.headers.get('authorization')?.split(' ')[1];
         if (!token) return new Response(JSON.stringify({ message: 'Unauthorized' }), { status: 401 });
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'mock-secret');
         if (decoded.role !== 'NGO') {
             return new Response(JSON.stringify({ message: 'Forbidden' }), { status: 403 });
         }

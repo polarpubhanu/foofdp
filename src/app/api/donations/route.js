@@ -37,7 +37,7 @@ export async function GET(req) {
         const token = req.headers.get('authorization')?.split(' ')[1];
         if (!token) return new Response(JSON.stringify({ message: 'Unauthorized' }), { status: 401 });
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'mock-secret');
         if (decoded.role !== 'NGO' && status === 'Pending') {
             // Allow donors to see their own if we added a filter, but for now simple list
         }
@@ -55,7 +55,7 @@ export async function POST(req) {
         const token = req.headers.get('authorization')?.split(' ')[1];
         if (!token) return new Response(JSON.stringify({ message: 'Unauthorized' }), { status: 401 });
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'mock-secret');
         if (decoded.role !== 'Donor') {
             return new Response(JSON.stringify({ message: 'Forbidden' }), { status: 403 });
         }
