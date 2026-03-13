@@ -64,17 +64,24 @@ export default function LoginPage() {
                 <div className="flex bg-gray-100 p-1 rounded-xl">
                     <button
                         type="button"
-                        className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${formData.role === 'Donor' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-500'}`}
+                        className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${formData.role === 'Donor' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-500'}`}
                         onClick={() => setFormData({ ...formData, role: 'Donor' })}
                     >
                         Donor
                     </button>
                     <button
                         type="button"
-                        className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${formData.role === 'NGO' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-500'}`}
+                        className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${formData.role === 'NGO' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-500'}`}
                         onClick={() => setFormData({ ...formData, role: 'NGO' })}
                     >
                         NGO
+                    </button>
+                    <button
+                        type="button"
+                        className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${formData.role === 'DeliveryPartner' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-500'}`}
+                        onClick={() => setFormData({ ...formData, role: 'DeliveryPartner' })}
+                    >
+                        Delivery Partner
                     </button>
                 </div>
                 <button

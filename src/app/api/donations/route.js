@@ -3,45 +3,18 @@ import dbConnect from '../../../lib/db';
 import Donation from '../../../models/Donation';
 import jwt from 'jsonwebtoken';
 
+import { mockDonations } from '../../../lib/mockData';
+
 export async function GET(req) {
     try {
         const db = await dbConnect();
-
-        if (db.isMock) {
-            return new Response(JSON.stringify([
-                {
-                    _id: 'mock-1',
-                    foodItem: 'Bread & Pastries',
-                    quantity: '5kg',
-                    expiryDate: new Date(Date.now() + 86400000).toISOString(),
-                    status: 'Pending',
-                    donor: { name: 'Local Bakery' },
-                    location: { address: 'Delhi Gate, New Delhi', coordinates: { lat: 28.6389, lng: 77.2425 } }
-                },
-                {
-                    _id: 'mock-2',
-                    foodItem: 'Fruit Basket',
-                    quantity: '10kg',
-                    expiryDate: new Date(Date.now() + 172800000).toISOString(),
-                    status: 'Pending',
-                    donor: { name: 'Fruit Mart' },
-                    location: { address: 'Marine Drive, Mumbai', coordinates: { lat: 18.9439, lng: 72.8231 } }
-                },
-                {
-                    _id: 'mock-3',
-                    foodItem: 'Fresh Rice & Curry',
-                    quantity: '20 Meals',
-                    createdAt: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
-                    expiryDate: new Date(Date.now() + 43200000).toISOString(),
-                    status: 'Pending',
-                    donor: { name: 'Guest User' },
-                    location: { address: 'Alliance University, Bangalore', coordinates: { lat: 12.9716, lng: 77.5946 } }
-                }
-            ]), { status: 200, headers: { 'Content-Type': 'application/json' } });
-        }
-
         const { searchParams } = new URL(req.url);
         const status = searchParams.get('status') || 'Pending';
+
+        if (db.isMock) {
+            const filteredDonations = mockDonations.filter(d => d.status === status);
+            return new Response(JSON.stringify(filteredDonations), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }
 
         // Simple JWT check (optional for public viewing, but NGO roles usually required)
         const token = req.headers.get('authorization')?.split(' ')[1];

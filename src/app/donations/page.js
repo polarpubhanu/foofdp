@@ -8,11 +8,14 @@ const Map = dynamic(() => import('@/components/Map'), {
     loading: () => <div className="h-full w-full bg-gray-100 animate-pulse flex items-center justify-center text-gray-400">Loading Map...</div>
 });
 
-export default function NGOAvailableDonationsPage() {
+export default function AvailableDonationsPage() {
     const [donations, setDonations] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [role, setRole] = useState('');
 
     useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        setRole(user.role);
         fetchDonations();
     }, []);
 
@@ -60,8 +63,8 @@ export default function NGOAvailableDonationsPage() {
         <div className="space-y-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-800">Available Surplus Food</h1>
-                    <p className="text-gray-500">Discover and rescue available food donations near you.</p>
+                    <h1 className="text-2xl font-bold text-gray-800">{role === 'NGO' ? 'Monitor Surplus Food' : 'Available Rescues'}</h1>
+                    <p className="text-gray-500">{role === 'NGO' ? 'Tracking food donations and their delivery status.' : 'Discover and accept available food rescues near you.'}</p>
                 </div>
                 <div className="bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm flex items-center gap-2">
                     <div className="bg-green-100 p-1.5 rounded-full text-green-700">
@@ -107,12 +110,18 @@ export default function NGOAvailableDonationsPage() {
                                 </div>
                             </div>
                             <div className="p-4 bg-gray-50 border-t border-gray-100">
-                                <button
-                                    onClick={() => handleAccept(donation._id)}
-                                    className="w-full py-2.5 bg-green-700 text-white font-bold rounded-xl hover:bg-green-800 transition-colors"
-                                >
-                                    Accept Donation
-                                </button>
+                                {role === 'DeliveryPartner' ? (
+                                    <button
+                                        onClick={() => handleAccept(donation._id)}
+                                        className="w-full py-2.5 bg-green-700 text-white font-bold rounded-xl hover:bg-green-800 transition-colors"
+                                    >
+                                        Accept Rescue
+                                    </button>
+                                ) : (
+                                    <div className="text-center py-2 text-xs font-semibold text-gray-400 italic">
+                                        Waiting for Delivery Partner
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ))

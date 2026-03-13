@@ -7,8 +7,13 @@ const donationSchema = new mongoose.Schema({
     expiryDate: { type: Date, required: true },
     status: {
         type: String,
-        enum: ['Pending', 'Accepted'],
+        enum: ['Pending', 'Accepted', 'PickedUp', 'Delivered'],
         default: 'Pending',
+    },
+    pickupStatus: {
+        type: String,
+        enum: ['None', 'Pending', 'PickedUp'],
+        default: 'None'
     },
     location: {
         address: String,
@@ -18,6 +23,7 @@ const donationSchema = new mongoose.Schema({
         },
     },
     acceptedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    deliveryPartner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     createdAt: { type: Date, default: Date.now },
 });
 

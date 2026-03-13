@@ -14,11 +14,17 @@ export default function Sidebar({ role }) {
 
     const ngoLinks = [
         { title: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
-        { title: 'Available Food', path: '/donations', icon: <ShoppingCart className="w-5 h-5" /> },
-        { title: 'Impact', path: '/dashboard#impact', icon: <BarChart3 className="w-5 h-5" /> },
+        { title: 'Monitor Rescues', path: '/donations', icon: <ShoppingCart className="w-5 h-5" /> },
+        { title: 'Track Deliveries', path: '/deliveries', icon: <MapIcon className="w-5 h-5" /> },
     ];
 
-    const links = role === 'Donor' ? donorLinks : ngoLinks;
+    const deliveryPartnerLinks = [
+        { title: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
+        { title: 'Available Deliveries', path: '/donations', icon: <ShoppingCart className="w-5 h-5" /> },
+        { title: 'My Work', path: '/deliveries', icon: <MapIcon className="w-5 h-5" /> },
+    ];
+
+    const links = role === 'Donor' ? donorLinks : (role === 'NGO' ? ngoLinks : deliveryPartnerLinks);
 
     return (
         <aside className="fixed left-0 top-16 w-64 h-[calc(100vh-64px)] bg-white border-r border-gray-200 py-6 overflow-y-auto z-40">
