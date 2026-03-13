@@ -68,7 +68,7 @@ export default function NextActiveDeliveriesPage() {
             {deliveries.length === 0 ? (
                 <div className="bg-white rounded-2xl p-12 text-center border border-gray-100 shadow-sm">
                     <Package className="mx-auto text-gray-300 w-12 h-12 mb-4" />
-                    <p className="text-gray-500">You don't have any active deliveries. Check "Available Food" to start rescuing!</p>
+                    <p className="text-gray-500">You don&apos;t have any active deliveries. Check &quot;Available Food&quot; to start rescuing!</p>
                 </div>
             ) : (
                 <div className="grid gap-4">
