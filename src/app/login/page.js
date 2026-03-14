@@ -24,7 +24,11 @@ export default function LoginPage() {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
                 // Force refresh to update layout state
-                window.location.href = '/dashboard';
+                if (data.user.role === 'Admin') {
+                    window.location.href = '/admin/dashboard';
+                } else {
+                    window.location.href = '/dashboard';
+                }
             } else {
                 setError(data.details ? `${data.message}: ${data.details}` : (data.message || 'Login failed'));
             }
@@ -82,6 +86,13 @@ export default function LoginPage() {
                         onClick={() => setFormData({ ...formData, role: 'DeliveryPartner' })}
                     >
                         Delivery Partner
+                    </button>
+                    <button
+                        type="button"
+                        className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${formData.role === 'Admin' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-500'}`}
+                        onClick={() => setFormData({ ...formData, role: 'Admin' })}
+                    >
+                        Admin
                     </button>
                 </div>
                 <button

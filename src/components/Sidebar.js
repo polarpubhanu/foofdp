@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, PlusCircle, History, ShoppingCart, Map as MapIcon, BarChart3, User } from 'lucide-react';
+import { LayoutDashboard, PlusCircle, History, ShoppingCart, Map as MapIcon, BarChart3, User, Users, Building2, ClipboardList } from 'lucide-react';
 
 export default function Sidebar({ role }) {
     const pathname = usePathname();
@@ -24,7 +24,14 @@ export default function Sidebar({ role }) {
         { title: 'My Work', path: '/deliveries', icon: <MapIcon className="w-5 h-5" /> },
     ];
 
-    const links = role === 'Donor' ? donorLinks : (role === 'NGO' ? ngoLinks : deliveryPartnerLinks);
+    const adminLinks = [
+        { title: 'Overview', path: '/admin/dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
+        { title: 'All NGOs', path: '/admin/ngos', icon: <Building2 className="w-5 h-5" /> },
+        { title: 'All Donors', path: '/admin/donors', icon: <Users className="w-5 h-5" /> },
+        { title: 'All Donations', path: '/admin/donations', icon: <ClipboardList className="w-5 h-5" /> },
+    ];
+
+    const links = role === 'Donor' ? donorLinks : (role === 'NGO' ? ngoLinks : (role === 'Admin' ? adminLinks : deliveryPartnerLinks));
 
     return (
         <aside className="fixed left-0 top-16 w-64 h-[calc(100vh-64px)] bg-white border-r border-gray-200 py-6 overflow-y-auto z-40">
