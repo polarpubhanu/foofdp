@@ -5,7 +5,7 @@ export let mockDonations = [
         quantity: '5kg',
         createdAt: new Date(Date.now() - 172800000).toISOString(),
         expiryDate: new Date(Date.now() + 86400000).toISOString(),
-        status: 'Pending',
+        status: 'Delivered',
         donor: { name: 'Local Bakery' },
         location: { address: 'Delhi Gate, New Delhi', coordinates: { lat: 28.6389, lng: 77.2425 } },
         ngoLocation: { lat: 28.5355, lng: 77.3910 } // Noida NGO
@@ -16,7 +16,7 @@ export let mockDonations = [
         quantity: '10kg',
         createdAt: new Date(Date.now() - 86400000).toISOString(),
         expiryDate: new Date(Date.now() + 172800000).toISOString(),
-        status: 'Pending',
+        status: 'Accepted',
         donor: { name: 'Fruit Mart' },
         location: { address: 'Marine Drive, Mumbai', coordinates: { lat: 18.9439, lng: 72.8231 } },
         ngoLocation: { lat: 19.0760, lng: 72.8777 } // BKC NGO
@@ -31,6 +31,19 @@ export let mockDonations = [
         donor: { name: 'Guest User' },
         location: { address: 'Alliance University, Bangalore', coordinates: { lat: 12.9716, lng: 77.5946 } },
         ngoLocation: { lat: 12.9279, lng: 77.6271 }, // HSR Layout NGO
+        deliveryPartner: null,
+        pickupStatus: 'None'
+    },
+    {
+        _id: 'mock-4',
+        foodItem: 'Sandwiches & Salads',
+        quantity: '15 Meals',
+        createdAt: new Date(Date.now() - 7200000).toISOString(),
+        expiryDate: new Date(Date.now() + 43200000).toISOString(),
+        status: 'PickedUp',
+        donor: { name: 'Corporate Cafe' },
+        location: { address: 'Cyber City, Gurgaon', coordinates: { lat: 28.4906, lng: 77.0892 } },
+        ngoLocation: { lat: 28.4595, lng: 77.0266 }, // Gurgaon NGO
         deliveryPartner: null,
         pickupStatus: 'None'
     }

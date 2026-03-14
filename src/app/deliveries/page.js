@@ -47,12 +47,23 @@ export default function NextActiveDeliveriesPage() {
     const handleDeliver = async (id) => {
         try {
             const token = localStorage.getItem('token');
-            // Normally this would update status to 'Delivered'
-            alert('Marked as delivered! Thank you for your service.');
-            // Simulate removal
-            setDeliveries(prev => prev.filter(d => d._id !== id));
+            const res = await fetch(`/api/donations/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ action: 'deliver' }),
+            });
+
+            if (res.ok) {
+                alert('Marked as delivered! Thank you for your service.');
+                fetchActiveDeliveries();
+            } else {
+                alert('Error updating delivery');
+            }
         } catch (err) {
-            alert('Error updating delivery');
+            alert('An error occurred');
         }
     };
 
@@ -77,9 +88,17 @@ export default function NextActiveDeliveriesPage() {
                             <div>
                                 <h3 className="text-lg font-bold text-green-700">{item.foodItem}</h3>
                                 <p className="text-gray-600"><strong>Quantity:</strong> {item.quantity}</p>
-                                <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
-                                    <MapPin size={14} />
-                                    <span>{item.location?.address}</span>
+                                <div className="space-y-1 mt-1">
+                                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                                        <MapPin size={14} className="text-orange-500" />
+                                        <span><strong>Pickup:</strong> {item.location?.address}</span>
+                                    </div>
+                                    {item.acceptedBy && (
+                                        <div className="flex items-center gap-2 text-sm text-gray-500">
+                                            <MapPin size={14} className="text-blue-500" />
+                                            <span><strong>Deliver to:</strong> {item.acceptedBy.name} ({item.acceptedBy.location?.address || 'Noida NGO'})</span>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             {role === 'DeliveryPartner' ? (

@@ -63,8 +63,8 @@ export default function AvailableDonationsPage() {
         <div className="space-y-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-800">{role === 'NGO' ? 'Monitor Surplus Food' : 'Available Rescues'}</h1>
-                    <p className="text-gray-500">{role === 'NGO' ? 'Tracking food donations and their delivery status.' : 'Discover and accept available food rescues near you.'}</p>
+                    <h1 className="text-2xl font-bold text-gray-800">{role === 'NGO' ? 'Accept Food Donations' : 'Available Rescues'}</h1>
+                    <p className="text-gray-500">{role === 'NGO' ? 'Accept surplus food to make it available for delivery.' : 'Discover and accept available food rescues near you.'}</p>
                 </div>
                 <div className="bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm flex items-center gap-2">
                     <div className="bg-green-100 p-1.5 rounded-full text-green-700">
@@ -110,16 +110,16 @@ export default function AvailableDonationsPage() {
                                 </div>
                             </div>
                             <div className="p-4 bg-gray-50 border-t border-gray-100">
-                                {role === 'DeliveryPartner' ? (
+                                {role === 'NGO' ? (
                                     <button
                                         onClick={() => handleAccept(donation._id)}
                                         className="w-full py-2.5 bg-green-700 text-white font-bold rounded-xl hover:bg-green-800 transition-colors"
                                     >
-                                        Accept Rescue
+                                        Accept Donation
                                     </button>
                                 ) : (
                                     <div className="text-center py-2 text-xs font-semibold text-gray-400 italic">
-                                        Waiting for Delivery Partner
+                                        {role === 'DeliveryPartner' ? 'Visible after NGO accepts' : 'Waiting for NGO'}
                                     </div>
                                 )}
                             </div>

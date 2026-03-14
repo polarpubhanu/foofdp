@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { History, ChevronRight, CheckCircle2, Clock } from "lucide-react";
+import { History, ChevronRight, CheckCircle2, Clock, Truck, Handshake } from "lucide-react";
 
 export default function HistoryPage() {
     const [history, setHistory] = useState([]);
@@ -10,7 +10,7 @@ export default function HistoryPage() {
         const fetchHistory = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const res = await fetch('/api/donations', {
+                const res = await fetch('/api/donations?status=all', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const data = await res.json();
@@ -25,6 +25,21 @@ export default function HistoryPage() {
     }, []);
 
     if (loading) return <div>Loading history...</div>;
+
+    const getStatusDisplay = (status) => {
+        switch (status) {
+            case 'Pending':
+                return { label: 'Awaiting NGO', icon: <Clock size={12} />, colors: 'bg-orange-50 text-orange-700' };
+            case 'Accepted':
+                return { label: 'NGO Accepted', icon: <Handshake size={12} />, colors: 'bg-blue-50 text-blue-700' };
+            case 'PickedUp':
+                return { label: 'On The Way', icon: <Truck size={12} />, colors: 'bg-indigo-50 text-indigo-700' };
+            case 'Delivered':
+                return { label: 'Delivered', icon: <CheckCircle2 size={12} />, colors: 'bg-green-50 text-green-700' };
+            default:
+                return { label: status, icon: <Clock size={12} />, colors: 'bg-gray-50 text-gray-700' };
+        }
+    };
 
     return (
         <div className="space-y-6">
@@ -64,9 +79,14 @@ export default function HistoryPage() {
                                         {item.quantity}
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide ${item.status === 'Delivered' ? 'bg-green-50 text-green-700' : 'bg-orange-50 text-orange-700'}`}>
-                                            {item.status === 'Delivered' ? <CheckCircle2 size={12} /> : <Clock size={12} />} {item.status}
-                                        </span>
+                                        {(() => {
+                                            const { label, icon, colors } = getStatusDisplay(item.status);
+                                            return (
+                                                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide ${colors}`}>
+                                                    {icon} {label}
+                                                </span>
+                                            );
+                                        })()}
                                     </td>
                                 </tr>
                             ))
