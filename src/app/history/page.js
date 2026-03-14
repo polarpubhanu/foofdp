@@ -58,7 +58,7 @@ export default function HistoryPage() {
                                         {item.foodItem}
                                     </td>
                                     <td className="px-6 py-4 text-sm text-gray-500">
-                                        {item.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'N/A'}
+                                        {item.createdAt ? new Date(item.createdAt).toLocaleDateString() : (item.expiryDate ? new Date(item.expiryDate).toLocaleDateString() : 'N/A')}
                                     </td>
                                     <td className="px-6 py-4 text-sm text-gray-600">
                                         {item.quantity}
