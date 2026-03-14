@@ -10,10 +10,14 @@ export async function PATCH(req, { params }) {
         const db = await dbConnect();
         if (db.isMock) {
             const { action } = await req.json();
-            const updated = updateMockDonation(params.id, { 
+            const updates = { 
                 status: action === 'accept' ? 'Accepted' : 'Delivered'
-            });
-            return new Response(JSON.stringify(updated || { _id: params.id, status: action === 'accept' ? 'Accepted' : 'Delivered' }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+            };
+            if (action === 'accept') updates.acceptedBy = decoded.id;
+            if (action === 'deliver') updates.deliveryPartner = decoded.id;
+            
+            const updated = updateMockDonation(params.id, updates);
+            return new Response(JSON.stringify(updated || { _id: params.id, ...updates }), { status: 200, headers: { 'Content-Type': 'application/json' } });
         }
         const token = req.headers.get('authorization')?.split(' ')[1];
         if (!token) return new Response(JSON.stringify({ message: 'Unauthorized' }), { status: 401 });

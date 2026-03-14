@@ -57,3 +57,14 @@ export const updateMockDonation = (id, updates) => {
     }
     return null;
 };
+
+export const addMockDonation = (donation) => {
+    const newDonation = {
+        _id: `mock-${Date.now()}`,
+        status: 'Pending',
+        createdAt: new Date().toISOString(),
+        ...donation
+    };
+    mockDonations.unshift(newDonation);
+    return newDonation;
+};

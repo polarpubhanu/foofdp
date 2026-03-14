@@ -3,7 +3,7 @@ import dbConnect from '../../../lib/db';
 import Donation from '../../../models/Donation';
 import jwt from 'jsonwebtoken';
 
-import { mockDonations } from '../../../lib/mockData';
+import { mockDonations, addMockDonation } from '../../../lib/mockData';
 
 export async function GET(req) {
     try {
@@ -20,8 +20,18 @@ export async function GET(req) {
             let filteredDonations = mockDonations;
             if (status && status !== 'all') {
                 filteredDonations = filteredDonations.filter(d => d.status === status);
-            } else if (!status && decoded.role !== 'Donor') {
-                filteredDonations = filteredDonations.filter(d => d.status === 'Pending');
+            } else if (status === 'all') {
+                if (decoded.role === 'Donor') {
+                    // In mock mode we don't have real unique donor IDs usually, so we'll show all
+                    // or filter by a mock ID if we want to be stricter.
+                    // For now, let's keep it simple and show all for history in mock mode.
+                    filteredDonations = mockDonations;
+                } else if (decoded.role === 'NGO') {
+                    filteredDonations = mockDonations.filter(d => d.status === 'Pending' || d.acceptedBy === decoded.id);
+                }
+            } else if (!status) {
+                if (decoded.role === 'NGO') filteredDonations = mockDonations.filter(d => d.status === 'Pending');
+                if (decoded.role === 'DeliveryPartner') filteredDonations = mockDonations.filter(d => d.status === 'Accepted');
             }
             return new Response(JSON.stringify(filteredDonations), { status: 200, headers: { 'Content-Type': 'application/json' } });
         }
@@ -69,7 +79,15 @@ export async function POST(req) {
 
         // Mock mode handling
         if (db.isMock) {
-            return new Response(JSON.stringify({ message: 'Mock mode: Donation simulated successfully' }), { status: 201 });
+            const { foodItem, quantity, expiryDate, address, coordinates } = await req.json();
+            const mockDonation = addMockDonation({
+                foodItem,
+                quantity,
+                expiryDate,
+                location: { address, coordinates },
+                donor: { name: 'Guest User' }
+            });
+            return new Response(JSON.stringify(mockDonation), { status: 201 });
         }
 
         const { foodItem, quantity, expiryDate, address, coordinates } = await req.json();

@@ -22,7 +22,7 @@ export default function Home() {
           href="/login"
           className="w-full sm:w-auto px-8 py-4 bg-green-700 text-white font-bold rounded-2xl hover:bg-green-800 transition-all flex items-center justify-center gap-2 group shadow-lg"
         >
-          Login to Dashboard
+          Login to save food
           <ArrowRight className="group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>
